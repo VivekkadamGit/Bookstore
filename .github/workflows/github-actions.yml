@@ -1,0 +1,40 @@
+name: bookstore 
+on: push 
+jobs:
+    build:
+        runs-on: ubuntu-latest
+        steps:
+            - name: get the code
+              uses: actions/checkout@v3
+
+            - name: Setup .NET SDK
+              uses: actions/setup-dotnet@v3
+        #   with:
+        #     dotnet-version: 7.0.x
+
+            - name: Setup Node.js
+              uses: actions/setup-node@v2
+        #   with:
+        #     node-version: 14
+
+            - name: Install Yarn
+              run: npm install -g yarn
+
+            - name: Install dependencies
+              run: dotnet restore
+
+            - name: Build
+              run: dotnet build --configuration Release --no-restore
+
+            - name: Test
+              run: dotnet test --no-restore --verbosity normal
+
+    # test:
+    #     needs: build
+    #     runs-on: ububtu-latest
+    #     steps:
+    #         #steps for testing the page
+
+    # deplpy:
+
+
