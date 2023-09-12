@@ -53,7 +53,7 @@ jobs:
             - name: Login to Amazon ECR
               run: |
                 aws --version
-                aws ecr get-login-password --region ap-south-1 | docker login -u AWS -p -p $(aws ecr get-login-password --region the-region-you-are-in) 177501120181.dkr.ecr.ap-south-1.amazonaws.com
+                aws ecr get-login-password --region ap-south-1 | docker login -u AWS -p $(aws ecr get-login-password --region the-region-you-are-in) 177501120181.dkr.ecr.ap-south-1.amazonaws.com
             
             - name: Build the docker image
               run: docker build -t dotnet-application . 
