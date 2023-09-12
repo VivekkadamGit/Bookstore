@@ -17,8 +17,8 @@ jobs:
         #   with:
         #     node-version: 14
 
-            - name: Install Yarn
-              run: npm install -g yarn
+            # - name: Install Yarn
+            #   run: npm install -g yarn
 
             - name: Install dependencies
               run: dotnet restore
@@ -26,11 +26,13 @@ jobs:
             - name: Build
               run: dotnet build --configuration Release --no-restore
 
-            - name: Run 
-              run: dotnet run 
+            # - name: Run 
+            #   run: dotnet run 
+              #having isshu in this command 
 
             - name: Test
               run: dotnet test --no-restore --verbosity normal
+              
 
     # test:
     #     needs: build
@@ -38,6 +40,16 @@ jobs:
     #     steps:
     #         #steps for testing the page
 
-    # deplpy:
+    # deplpy: 
+    #     runs-on: ubuntu-latest
+    #     steps:
+    #         - name: Build the docker image
+    #           run: docker build -t dotnet-application
+            
+    #         - name: Push image to ECR
+    #           run: docker login 
+    #           run: docker push xyz
+
+
 
 
