@@ -27,7 +27,7 @@ jobs:
               run: dotnet build --configuration Release --no-restore
 
             - name: Run 
-              run: dotner run 
+              run: dotnet run 
 
             - name: Test
               run: dotnet test --no-restore --verbosity normal
