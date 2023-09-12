@@ -34,21 +34,35 @@ jobs:
               run: dotnet test --no-restore --verbosity normal
               
 
-    # test:
-    #     needs: build
-    #     runs-on: ububtu-latest
-    #     steps:
-    #         #steps for testing the page
+    deplpy: 
+        needs: build
+        runs-on: ubuntu-latest
+        steps:
+            - name: get the code
+              uses: actions/checkout@v3
 
-    # deplpy: 
-    #     runs-on: ubuntu-latest
-    #     steps:
-    #         - name: Build the docker image
-    #           run: docker build -t dotnet-application
+            - name: Set up Docker
+              uses: docker/setup-buildx-action@v7
+
+            - name: Configure AWS CLI
+              run: | 
+                aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }}
+                aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+                aws configure set region ap-south-1
+
+            - name: Login to Amazon ECR
+              run: |
+                aws --version
+                aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 177501120181.dkr.ecr.ap-south-1.amazonaws.com
             
-    #         - name: Push image to ECR
-    #           run: docker login 
-    #           run: docker push xyz
+            - name: Build the docker image
+              run: docker build -t dotnet-application . 
+            
+            - name: Tag docker image
+              run: docker tag dotnet-application:latest 177501120181.dkr.ecr.ap-south-1.amazonaws.com/dotnet-application:latest
+            
+            - name: Push image to ECR
+              run: docker push 177501120181.dkr.ecr.ap-south-1.amazonaws.com/dotnet-application:latest
 
 
 
