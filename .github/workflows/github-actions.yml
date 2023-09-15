@@ -55,10 +55,10 @@ jobs:
             
             - name: Tag docker image
               run: |
-                docker tag dotnet-application-auth:latest ${{ env.ECS_REPO}}/dotnet-application-auth:latest
-                docker tag dotnet-application-migrator:latest ${{ env.ECS_REPO}}/dotnet-application-migrator:latest
-                docker tag dotnet-application-web:latest ${{ env.ECS_REPO}}/dotnet-application-web:latest
-                docker tag dotnet-application-host:latest ${{ env.ECS_REPO}}/ dotnet-application-host:latest
+                docker tag dotnet-application-auth:latest ${{ env.ECS_REPO }}/dotnet-application:latest
+                docker tag dotnet-application-migrator:latest ${{ env.ECS_REPO }}/dotnet-application:latest
+                docker tag dotnet-application-web:latest ${{ env.ECS_REPO }}/dotnet-application:latest
+                docker tag dotnet-application-host:latest ${{ env.ECS_REPO }}/ dotnet-application:latest
         
             - name: Push image to ECR
               run: |
