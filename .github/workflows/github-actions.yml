@@ -55,17 +55,17 @@ jobs:
             
             - name: Tag docker image
               run: |
-                docker tag dotnet-application-auth:latest $ECS_REPO/dotnet-application:latest
-                docker tag dotnet-application-migrator:latest $ECS_REPO/dotnet-application:latest
-                docker tag dotnet-application-web:latest $ECS_REPO/dotnet-application:latest
-                docker tag dotnet-application-host:latest $ECS_REPO/ dotnet-application:latest
+                docker tag dotnet-application-auth:latest ${{ secrets.ECS_REPO }}/dotnet-application:latest
+                docker tag dotnet-application-migrator:latest ${{ secrets.ECS_REPO }}/dotnet-application:latest
+                docker tag dotnet-application-web:latest ${{ secrets.ECS_REPO }}/dotnet-application:latest
+                docker tag dotnet-application-host:latest ${{ secrets.ECS_REPO }}/ dotnet-application:latest
         
             - name: Push image to ECR
               run: |
-                 docker push $ECS_REPO/dotnet-application-auth:latest
-                 docker push $ECS_REPO/dotnet-application-migrator:latest
-                 docker push $ECS_REPO/dotnet-application-web:latest
-                 docker push $ECS_REPO/dotnet-application-host:latest
+                 docker push ${{ secrets.ECS_REPO }}/dotnet-application-auth:latest
+                 docker push ${{ secrets.ECS_REPO }}/dotnet-application-migrator:latest
+                 docker push ${{ secrets.ECS_REPO }}/dotnet-application-web:latest
+                 docker push ${{ secrets.ECS_REPO }}/dotnet-application-host:latest
 
 
             - name: Deploy to ECS
