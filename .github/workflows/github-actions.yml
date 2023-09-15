@@ -42,7 +42,7 @@ jobs:
                 aws configure set region ap-south-1
 
             - name: Login to Amazon ECR
-              run: |
+              run: | 
                 aws --version
                 aws ecr get-login-password --region ap-south-1 | docker login -u AWS -p $(aws ecr get-login-password --region ap-south-1) ${{ secrets.ECS_ACCOUNT }}
             
@@ -55,10 +55,10 @@ jobs:
             
             - name: Tag docker image
               run: |
-                docker tag dotnet-application-auth:latest ${{secrets.ECS_ACCOUNT}}/dotnet-application-auth:latest
-                docker tag dotnet-application-migrator:latest ${{ secrets.ECS_ACCOUNT}}/dotnet-application-migrator:latest
-                docker tag dotnet-application-web:latest ${{secrets.ECS_ACCOUNT}}/dotnet-application-web:latest
-                docker tag dotnet-application-host:latest ${{secrets.ECS_ACCOUNT}}/ dotnet-application-host:latest
+                docker tag dotnet-application-auth:latest ${{ env.ECS_REPO}}/dotnet-application-auth:latest
+                docker tag dotnet-application-migrator:latest ${{ env.ECS_REPO}}/dotnet-application-migrator:latest
+                docker tag dotnet-application-web:latest ${{ env.ECS_REPO}}/dotnet-application-web:latest
+                docker tag dotnet-application-host:latest ${{ env.ECS_REPO}}/ dotnet-application-host:latest
         
             - name: Push image to ECR
               run: |
