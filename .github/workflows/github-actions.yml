@@ -75,4 +75,4 @@ jobs:
             #     aws ecs update-service --cluster my-cluster --service my-ecs-service-auth --force-new-deployment
             #     aws ecs update-service --cluster my-cluster --service my-ecs-service-migrator --force-new-deployment
 
-
+#checking
