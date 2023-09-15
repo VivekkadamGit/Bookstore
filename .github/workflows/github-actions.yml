@@ -14,21 +14,12 @@ jobs:
 
             - name: Setup Node.js
               uses: actions/setup-node@v2
-        #   with:
-        #     node-version: 14
-
-            # - name: Install Yarn
-            #   run: npm install -g yarn
 
             - name: Install dependencies
               run: dotnet restore
 
             - name: Build
               run: dotnet build --configuration Release --no-restore
-
-            # - name: Run 
-            #   run: dotnet run 
-              #having isshu in this command 
 
             - name: Test
               run: dotnet test --no-restore --verbosity normal
@@ -53,19 +44,35 @@ jobs:
             - name: Login to Amazon ECR
               run: |
                 aws --version
-                aws ecr get-login-password --region ap-south-1 | docker login -u AWS -p $(aws ecr get-login-password --region ap-south-1) 177501120181.dkr.ecr.ap-south-1.amazonaws.com
+                aws ecr get-login-password --region ap-south-1 | docker login -u AWS -p $(aws ecr get-login-password --region ap-south-1) ${{ secrets.ECS_ACCOUNT }}
             
             - name: Build the docker image
-              run: docker build -t dotnet-application . 
+              run: | 
+                docker build -t dotnet-application-auth --target auth -f Dockerfile . 
+                docker build -t dotnet-application-migrator --target migrator -f Dockerfile . 
+                docker build -t dotnet-application-web --target web -f Dockerfile . 
+                docker build -t dotnet-application-host --target host -f Dockerfile . 
             
             - name: Tag docker image
-              run: docker tag dotnet-application:latest 177501120181.dkr.ecr.ap-south-1.amazonaws.com/dotnet-application:latest
-            
+              run: |
+                docker tag dotnet-application-auth:latest ${{ secrets.ECS_ACCOUNT }}/dotnet-application-auth:latest
+                docker tag dotnet-application-migrator:latest ${{ secrets.ECS_ACCOUNT }}/dotnet-application-migrator:latest
+                docker tag dotnet-application-web:latest ${{ secrets.ECS_ACCOUNT }}/dotnet-application-web:latest
+                docker tag dotnet-application-host:latest ${{ secrets.ECS_ACCOUNT }}/ dotnet-application-host:latest
+        
             - name: Push image to ECR
-              run: docker push 177501120181.dkr.ecr.ap-south-1.amazonaws.com/dotnet-application:latest
+              run: |
+                 docker push ${{ secrets.ECS_ACCOUNT }}/dotnet-application-auth:latest
+                 docker push ${{ secrets.ECS_ACCOUNT }}/dotnet-application-migrator:latest
+                 docker push ${{ secrets.ECS_ACCOUNT }}/dotnet-application-web:latest
+                 docker push ${{ secrets.ECS_ACCOUNT }}/dotnet-application-host:latest
+
 
             - name: Deploy to ECS
               run: |
-                aws ecs update-service --cluster my-cluster --service my-ecs-service --force-new-deployment
+                aws ecs update-service --cluster my-cluster --service my-ecs-service-web --force-new-deployment
+                aws ecs update-service --cluster my-cluster --service my-ecs-service-host --force-new-deployment
+                aws ecs update-service --cluster my-cluster --service my-ecs-service-auth --force-new-deployment
+                aws ecs update-service --cluster my-cluster --service my-ecs-service-migrator --force-new-deployment
 
 
