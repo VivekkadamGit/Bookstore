@@ -68,11 +68,11 @@ jobs:
                  docker push ${{ secrets.ECR_REPO_HOST }}
 
 
-            # - name: Deploy to ECS
-            #   run: |
-            #     aws ecs update-service --cluster my-cluster --service my-ecs-service-web --force-new-deployment
-            #     aws ecs update-service --cluster my-cluster --service my-ecs-service-host --force-new-deployment
-            #     aws ecs update-service --cluster my-cluster --service my-ecs-service-auth --force-new-deployment
-            #     aws ecs update-service --cluster my-cluster --service my-ecs-service-migrator --force-new-deployment
+            - name: Deploy to ECS
+              run: |
+                aws ecs update-service --cluster my-cluster --service my-ecs-service-web --force-new-deployment
+                aws ecs update-service --cluster my-cluster --service my-ecs-service-host --force-new-deployment
+                aws ecs update-service --cluster my-cluster --service my-ecs-service-auth --force-new-deployment
+                aws ecs update-service --cluster my-cluster --service my-ecs-service-migration --force-new-deployment
 
-#checking
+
