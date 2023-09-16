@@ -27,7 +27,7 @@ Follow these steps to get the application up and running:
 2. **Navigate to the Web project directory**
 
    ```bash
-   cd Bookstore/Acme.BookStore.Web
+   cd Bookstore/src/Acme.BookStore.Web
    ```
 
 3. **Restore client-side packages**
@@ -67,6 +67,28 @@ Follow these steps to get the application up and running:
    ```
 
 After following these steps, navigate to `https://localhost:5001` in your web browser to view the application.
+
+## Github Actions
+
+Github actions have "Onpush" running method. whenever new code get push on main branch, it will trigger the github actions.
+
+Github action contains 2 Jobs:
+1. Build
+2. Deploy
+
+Image fo Github Runner will be "ubuntu-latest"
+
+Build part will download the dependencies via ```dotnet restore``` and build the application via build command ```dotnet build --configuration Release --no-restore ``` and Test the applciation via ```dotnet test --no-restore --verbosity normal```
+
+(Took referance via documentation of Github actions .Net example)
+
+Inside Deploy part.
+
+It will download the dependencies like docker and aws cli.
+
+I have passed allthe sensite data into the secrets of repository inside github actions.
+
+It will build the docker images and then it will get tag to repo and push to it.
 
 ## Contributing
 
